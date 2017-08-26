@@ -6,7 +6,7 @@ import (
 		"path/filepath"
 		"html/template"
 		"sync"
-		// "github.com/CyberMergina/go-beginers20170826/fruit"
+		"github.com/golangTest/fruit"
 )
 
 type templateHandler struct {
@@ -15,24 +15,12 @@ type templateHandler struct {
 	templ *template.Template
 }
 
-type Product struct {
-	Name string
-}
-
-type Data struct {
-	Product []*Product
-}
-
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func(){
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates",t.filename)))
 	})
-
-	p1 := Product{Name:"りんご"}
-	p2 := Product{Name:"なし"}
-	p3 := Product{Name:"ばなな"}
-	d := Data{ Product:[]*Product{&p1, &p2, &p3}}
-	t.templ.Execute(w,d)
+	d := fruit.GetList()
+	t.templ.Execute(w, d)
 }
 
 func main() {
